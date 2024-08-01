@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<script type="module" crossorigin src="/gesturevt/assets/index-e595f920.js"></script>
+<script type="module" crossorigin src="/gesturevt/assets/index-f9ff1ce0.js"></script>
 
 <meta name="viewport" content="width=device-width, minimum-scale=1">
 
@@ -65,8 +65,21 @@
     position: absolute;
     left: 0;
     top: 0;
+  }
+
+  /* style for the top screen in the stack */
+  .screen.top {
+    animation-timeline: --progress-timeline;
     animation-fill-mode: forwards;
     animation-timing-function: linear;
+  }
+
+  /* style for when the gesture is commited and the screen animating to exit */
+  .screen.end {
+    animation-fill-mode: forwards;
+    animation-timing-function: linear;
+    animation-duration: 150ms;
+    animation-timeline: auto;
   }
   
   #stack {
@@ -86,6 +99,12 @@
   @keyframes screenswipe {
     to {
       transform: translateX(100vw);
+    }
+  }
+
+  @keyframes screenswipeend {
+    to {
+      transform: translateX(150vw);
     }
   }
 

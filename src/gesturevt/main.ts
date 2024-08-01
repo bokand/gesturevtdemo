@@ -1,13 +1,12 @@
 import { BackAnimationController } from "./Controller";
 import { BackEvent } from "./Util";
 import { NavigationBarEdgePanel } from "./NavigationBarEdgePanel";
-import { SpringAnimator } from "./SpringAnimator";
 import { BackProgressAnimator } from "./BackProgressAnimator";
 
   const screens = [
     {src: 'https://cdn.glitch.global/2950c782-439e-4f98-a671-b34cef4f461e/cnn1.png?v=1722393268913',
         timeline: '--progress-timeline',
-        animation: 'screenswipe',
+        animation: 'shrink',
     },  
     {src: 'https://cdn.glitch.global/2950c782-439e-4f98-a671-b34cef4f461e/cnn2.png?v=1722393272553',
         timeline: '--progress-timeline',
@@ -19,7 +18,7 @@ import { BackProgressAnimator } from "./BackProgressAnimator";
     },   
     {src: 'https://cdn.glitch.global/2950c782-439e-4f98-a671-b34cef4f461e/wikipedia1.png?v=1722393277064',
         timeline: '--progress-timeline',
-        animation: 'screenswipe',
+        animation: 'shrink',
     },   
     {src: 'https://cdn.glitch.global/2950c782-439e-4f98-a671-b34cef4f461e/wikipedia2.png?v=1722393279653',
         timeline: '--progress-timeline',
@@ -27,11 +26,11 @@ import { BackProgressAnimator } from "./BackProgressAnimator";
     },   
     {src: 'https://cdn.glitch.global/2950c782-439e-4f98-a671-b34cef4f461e/hn1.png?v=1722393282525',
         timeline: '--progress-timeline',
-        animation: 'screenswipe',
+        animation: 'shrink',
     },  
     {src: 'https://cdn.glitch.global/2950c782-439e-4f98-a671-b34cef4f461e/hn2.png?v=1722393284651',
         timeline: '--progress-timeline',
-        animation: 'screenswipe',
+        animation: 'shrink',
     },  
     {src: 'https://cdn.glitch.global/2950c782-439e-4f98-a671-b34cef4f461e/hn3.png?v=1722393287364',
         timeline: '--progress-timeline',

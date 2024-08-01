@@ -1,16 +1,15 @@
 import { BackEvent } from "./Util";
-import { SpringAnimator } from "./SpringAnimator";
-import { Spring } from "../SpringPhysicsModel";
+import { SpringForce } from "./SpringForce";
+import { SpringAnimation } from "./SpringAnimation";
 
 interface ProgressCallback {
     onProgressUpdate(event: BackEvent): void;
 }
 
 export class BackProgressAnimator {
-    static SCALE_FACTOR = 10000;
-    static PIXELS_PER_METER = 2144; // ?
+    static SCALE_FACTOR = 100;
 
-    private mSpring: SpringAnimator; 
+    private mSpring: SpringAnimation; 
     private mCallback: ProgressCallback | null = null;
     private mProgress: number = 0;
     private mLastBackEvent: BackEvent | null = null;
@@ -19,12 +18,7 @@ export class BackProgressAnimator {
 
     constructor() {
         // setup spring
-        this.mSpring = new SpringAnimator(
-            {
-                frequencyResponse: 0.16 * BackProgressAnimator.PIXELS_PER_METER,
-                dampingRatio: 1.01,
-                name: "test",
-            },
+        this.mSpring = new SpringAnimation(
             (value: number) => {
                 value = Math.min(BackProgressAnimator.SCALE_FACTOR, Math.max(0, value));
                 this.setProgress(value);
@@ -34,6 +28,10 @@ export class BackProgressAnimator {
                 return this.getProgress();
             },
             null);
+        const force = new SpringForce();
+        force.setStiffness(SpringForce.STIFFNESS_MEDIUM)
+        force.setDampingRatio(SpringForce.DAMPING_RATIO_NO_BOUNCY);
+        this.mSpring.setSpring(force);
     }
 
     private mOnAnimationEndListener: () => void = () => {
@@ -55,7 +53,9 @@ export class BackProgressAnimator {
         }
         this.mLastBackEvent = event;
         console.log("OnBackProgressed: " + event.progress);
-        this.mSpring.animateTo(event.progress * BackProgressAnimator.SCALE_FACTOR);
+        if (this.mSpring == null) 
+            return;
+        this.mSpring.animateToFinalPosition(event.progress * BackProgressAnimator.SCALE_FACTOR);
     }
 
     public onBackStarted(event: BackEvent, callback: ProgressCallback): void {
@@ -71,8 +71,12 @@ export class BackProgressAnimator {
             this.updateProgressValue(0);
             this.invokeBackCancelledRunnable();
         }
-        this.mSpring.animateTo(0);
-        this.mSpring.skipToEnd();
+        this.mSpring.animateToFinalPosition(0);
+        if (this.mSpring.canSkipToEnd())
+            this.mSpring.skipToEnd();
+        else
+            this.mSpring.cancel();
+
         this.mBackAnimationInProgress = false;
         this.mLastBackEvent = null;
         this.mCallback = null;
@@ -84,7 +88,7 @@ export class BackProgressAnimator {
         this.mSpring.doneCb = finishCallback;
         // this.mSpring.addEndListener(mBackCanceled)
         console.log("===CANCEL BACK PROGRESS");
-        this.mSpring.animateTo(0);
+        this.mSpring.animateToFinalPosition(0);
     }
 
     public isBackAnimationInProgress(): boolean {

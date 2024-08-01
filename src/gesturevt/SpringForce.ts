@@ -107,7 +107,8 @@ export class SpringForce  {
                 + this.mNaturalFreq * Math.sqrt(this.mDampingRatio * this.mDampingRatio - 1);   
 
             this.mGammaMinus = -this.mDampingRatio * this.mNaturalFreq
-                - this.mNaturalFreq * Math.sqrt(this.mDampingRatio * this.mDampingRatio - 1);
+                - this.mNaturalFreq * Math.sqrt(this.mDampingRatio * this.mDampingRatio   
+ - 1);
         } else if (this.mDampingRatio >= 0 && this.mDampingRatio < 1) {
             // Under damping
             this.mDampedFreq = this.mNaturalFreq * Math.sqrt(1 - this.mDampingRatio * this.mDampingRatio);
