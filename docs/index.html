@@ -1,152 +1,117 @@
-<!doctype html>
-<html lang="en">
+<!DOCTYPE html>
+<script type="module" crossorigin src="/gesturevt/assets/index-e595f920.js"></script>
 
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Default Nav Transitions</title>
-  <script type="module" crossorigin src="/slidey-ux-experiments/assets/index-74ad345e.js"></script>
-  <link rel="stylesheet" href="/slidey-ux-experiments/assets/index-a5db21f3.css">
-</head>
+<meta name="viewport" content="width=device-width, minimum-scale=1">
 
-<body>
-  <!--
-  <div id=progressContainer class="progress-container attributed">
-  -->
-  <div id=chevronContainer>
-    <div id=chevron>&lt;</div>
-  </div>
-  <div id=progressContainer style="z-index:9999" class="progress-container">
-    <div id="globalProgress" style="display:none">
-      <progress style="width:100%" class="bar pure-material-progress-linear"/>
-    </div>
-  </div>
-  <div id=settingsPanel class="slider-container">
-    <div class="title">
-      Fun with Back Nav!
-    </div>
-    <input type=button value="Test" id=buttonTest></input>
-    <div class="slider-window">
-      <div class="slider-label">
-        <h2>commit delay: <span id="networkDelayDisplay"></span><span></span></h2>
-        <input id="networkDelayInput" type="range" min="50" max="2400" value="200" step="50">
-      </div>
-    </div>
-    <canvas id="plot" width="300px" height="100px" style="border:1px solid #000000;"></canvas>
-    <div class="slider-window">
-      <div class="slider-label">
-        <h2>target commit stop: <span id="targetStopDisplay"></span><span>%</span></h2>
-        <input id="settingTargetStop" type="range" min="0.1" max="0.95" value="0.8" step="0.05">
-      </div>
-    </div>
-    <div class="slider-window">
-      <div class="slider-label">
-        <h2>preset:
-        <select id="preset">
-          <option value="slowBounce">Slow bounce</option>
-          <option value="quickBounce">Quick bounce</option>
-          <option value="steady">Steady</option>
-          <option value="drift">Drift</option>
-          <option selected="selected" value="none">none</option>
-        </select>
-        </h2>
-      </div>
-    </div>
-    <div class="slider-window">
-      <div class="slider-label modes">
-        <h2>Modes</h2>
-        <label class=check-box-label>
-          <input id="settingScrimOnBottom" type="checkbox">
-          scrim always on bottom page
-        </label>
-        <label class=check-box-label>
-          <input id="settingUnloadHandler" type="checkbox">
-          unload handler
-        </label>
-        <label class=check-box-label>
-          <input id="settingBoostVelocity" type="checkbox" checked>
-          boost velocity
-        </label>
-        <label class=check-box-label>
-          <input id="settingBidirectionalBack" type="checkbox">
-          back navigation on both edges
-        </label>
-        <label class=check-box-label>
-          <input id="settingParallax" type="checkbox" checked>
-          parallax on bottom page
-        </label>
+<script>
+</script>
+<style>
+  body {
+    margin: 0;
+  }
+  #backarea {
+    position: fixed;
+    width: 100px;
+    height: 100%;
+    left: 0;
+    top: 0;
+    opacity: 0.1;
+    background-color: gainsboro;
+    touch-action: none;
+  }
+  #chevrons {
+    position: fixed;
+    left: -50px;
+    top: 50vh;
+    width: 50px;
+    height: 50px;
+    border-radius: 25px;
+    background-color: #2e3c3d;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #a7cdc8;
+    will-change: transform;
+    
+  }
 
-        <label class=check-box-label style="display:none">
-          <input id="settingFadeForeground" type="checkbox">
-          fade foreground
-        </label>
-        <label class=check-box-label style="display:none">
-          <input id="settingWobble" type="checkbox">
-          wobble
-        </label>
-        <label class=check-box-label>
-          <input id="settingChevron" type="checkbox">
-          chevron
-        </label>
-      </div>
-    </div>
-    <div class="slider-window">
-      <div class="slider-label">
-        <h2>Spring Response: <span id="spring80FrequencyResponseDisplay"></span></h2>
-        <input id="spring80FrequencyResponse" type="range" min="10" max="2000" value="800">
-
-        <h2>Spring Damping Ratio: <span id="spring80DampingRatioDisplay"></span></h2>
-        <input id="spring80DampingRatio" type="range" min="0.0" max="1.2" value="0.72" step="0.01">
-
-        <h2>Min Oscillation: <span id="preserveMinOscillationDisplay"></span></h2>
-        <input id="preserveMinOscillation" type="range" min="0.0" max="0.2" value="0.0" step="0.01">
-
-        <div  style="display:none">
-          <h2>Hook At: <span id="hookAtDisplay"></span>%</h2>
-          <input id="hookAt" type="range" min="0" max="90" value="0" step="5">
-        </div>
-      </div>
-    </div>
-    <div class="slider-window">
-      <div class="slider-label">
-        <h2>zoom: <span id="zoomDisplay"></span><span>%</span></h2>
-        <input id="settingZoom" type="range" min="60" max="100" value="100" step="5">
-        <label class=check-box-label id="label_for_progress_attribution">
-          <input id="settingProgressAttribution" type="checkbox" checked>
-          attribute progress bar to page
-        </label>
-      </div>
-    </div>
-    <div class="slider-window">
-      <div class="slider-label">
-        <h2>drag curve:</h2>
-        <select id="dragCurve">
-          <option value="linear80">linear with max of 80%</option>
-          <option value="linear100">linear</option>
-          <option value="linearelastic">linear with elastic overscroll</option>
-          <option value="snapto">snap to target</option>
-        </select>
-      </div>
-    </div>
-  </div>
-  <div id=screenshots class=touch-target style=display:none>
-    <div class="screenshot_container bottom_screenshot show_scrim" id=midimg>
-      <img class=screenshot src=/slidey-ux-experiments/resources/srp-couches.png>
-      <div class=screenshot_container id=midimgprecommit>
-        <img class=screenshot src=/slidey-ux-experiments/resources/srp-cats.png>
-      </div>
-      <div  class="scrim"></div>
-      <div id="attributedProgress" style="display:none">
-        <progress style="width:100%" class="bar pure-material-progress-linear"/>
-      </div>
-    </div>
-    <div class="screenshot_container top_screenshot" id=frontimg>
-      <img class=screenshot src=resources/srp-cats.png>
-      <div class="scrim"></div>
-    </div>
-    <input type=button value="Settings" id=buttonSettings></input>
-  </div>
+  :root {
+    timeline-scope: --progress-timeline;
+  }
   
-</body>
+  .scroller {
+    width: 100px;
+    height: 100px;
+    position: relative;
+    left: 100px;
+    overflow: auto;
+    background-color: white;
+  }
+  .scrollerContent {
+    width: 10px;
+    height: 10100px
+  }
+  
+  #progressScroller {
+    scroll-timeline: --progress-timeline;
+    top: 300px;
+    visibility: hidden;
+    pointer-events: none;
+  }
+  
+  .screen {
+    /*width: 100%;
+    height: 100%;*/
+    position: absolute;
+    left: 0;
+    top: 0;
+    animation-fill-mode: forwards;
+    animation-timing-function: linear;
+  }
+  
+  #stack {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+  }
+  
+  @keyframes leftchevron {
+    to {
+      transform: translateX(30px);
+    }
+  }
+  
+  @keyframes screenswipe {
+    to {
+      transform: translateX(100vw);
+    }
+  }
 
-</html>
+  @keyframes shrink {
+    to {
+      transform: scale(0.7);
+    }
+  }
+
+  @keyframes shrinkend {
+    to {
+      transform: scale(0);
+    }
+  }
+</style>
+
+<div id="progressScroller" class="scroller">
+  <div class="scrollerContent">Progress</div>
+</div>
+<div id="stack">
+  
+</div>
+<div id="backarea">
+</div>
+<div id="chevrons">
+    <svg width="40" height="40" viewbox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+     <path d="M15 18L9 12L15 6" stroke="currentColor" stroke-width="2.5" stroke-linecap="square" stroke-linejoin="round"/>
+    </svg>
+</div>

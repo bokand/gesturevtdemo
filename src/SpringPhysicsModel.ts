@@ -1,7 +1,7 @@
 import { AdvanceResult, PhysicsModel, PhysicsModelInit } from './PhysicsModel.ts'
 import { Point, fail, findVelocity } from './util.ts';
 
-interface SpringConfig {
+export interface SpringConfig {
     frequencyResponse: number,
     dampingRatio: number,
     name: string, // Debug only.
@@ -16,7 +16,7 @@ interface SpringPosition {
 const SPRING_HISTORY_SIZE = 10;
 const SPRING_AT_REST_THRESHOLD = 10;
 
-class Spring {
+export class Spring {
     mass = 1;
     initialVelocity = 0;
     dampingRatio: number;
