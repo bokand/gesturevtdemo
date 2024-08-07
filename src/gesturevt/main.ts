@@ -4,38 +4,47 @@ import { NavigationBarEdgePanel } from "./NavigationBarEdgePanel";
 import { BackProgressAnimator } from "./BackProgressAnimator";
 
   const screens = [
-    {src: 'https://cdn.glitch.global/2950c782-439e-4f98-a671-b34cef4f461e/cnn1.png?v=1722393268913',
+    {src: '/resources/cnn3.png',
         timeline: '--progress-timeline',
-        animation: 'shrink',
+        animation: '',
     },  
-    {src: 'https://cdn.glitch.global/2950c782-439e-4f98-a671-b34cef4f461e/cnn2.png?v=1722393272553',
+    {src: '/resources/cnn2.png',
         timeline: '--progress-timeline',
-        animation: 'shrink',
-    },   
-    {src: 'https://cdn.glitch.global/2950c782-439e-4f98-a671-b34cef4f461e/cnn3.png?v=1722393274989',
-        timeline: '--progress-timeline',
-        animation: 'screenswipe',
-    },   
-    {src: 'https://cdn.glitch.global/2950c782-439e-4f98-a671-b34cef4f461e/wikipedia1.png?v=1722393277064',
-        timeline: '--progress-timeline',
-        animation: 'shrink',
-    },   
-    {src: 'https://cdn.glitch.global/2950c782-439e-4f98-a671-b34cef4f461e/wikipedia2.png?v=1722393279653',
-        timeline: '--progress-timeline',
-        animation: 'screenswipe',
-    },   
-    {src: 'https://cdn.glitch.global/2950c782-439e-4f98-a671-b34cef4f461e/hn1.png?v=1722393282525',
-        timeline: '--progress-timeline',
-        animation: 'shrink',
+        animation: '',
     },  
-    {src: 'https://cdn.glitch.global/2950c782-439e-4f98-a671-b34cef4f461e/hn2.png?v=1722393284651',
+    {src: '/resources/cnn1.png',
         timeline: '--progress-timeline',
-        animation: 'shrink',
+        animation: 'builtinback',
     },  
-    {src: 'https://cdn.glitch.global/2950c782-439e-4f98-a671-b34cef4f461e/hn3.png?v=1722393287364',
+    {src: '/resources/gmail3.png',
         timeline: '--progress-timeline',
-        animation: 'screenswipe',
-    },
+        animation: 'gmailshrink',
+    },  
+    {src: '/resources/gmail2.png',
+        timeline: '--progress-timeline',
+        animation: 'slidefromleft',
+        incomingTransform: 'translateX(-100vw)',
+    },  
+    {src: '/resources/gmail1.png',
+        timeline: '--progress-timeline',
+        animation: 'builtinback',
+    },  
+    {src: '/resources/wiki4.png',
+        timeline: '--progress-timeline',
+        animation: 'spin',
+    },  
+    {src: '/resources/wiki3.png',
+        timeline: '--progress-timeline',
+        animation: 'spin',
+    },  
+    {src: '/resources/wiki2.png',
+        timeline: '--progress-timeline',
+        animation: 'spin',
+    },  
+    {src: '/resources/wiki1.png',
+        timeline: '--progress-timeline',
+        animation: 'builtinback',
+    },  
   ];
 
   function syncEffectTimeline(x: number) {
@@ -43,7 +52,8 @@ import { BackProgressAnimator } from "./BackProgressAnimator";
     scroller.scrollTop = x * 10000;
   }
 
-  addEventListener('keydown', () => console.log("##################3"));
+  // For debugging - helps locate logs related to a glitch noticed during an animation.
+  addEventListener('keydown', () => console.log("##################"));
 
   // 
   function backProgressUpdated(backEvent: BackEvent) {
@@ -71,9 +81,8 @@ import { BackProgressAnimator } from "./BackProgressAnimator";
       //console.log('Back Canceled');
     },
     onBackInvoked: () => {
-      const scroller = document.getElementById("progressScroller")!;
-      progressAnimator.reset();
       popScreen();
+      progressAnimator.reset();
       //console.log('Back Invoked');
     }
   });
@@ -160,25 +169,44 @@ window.onload = () => {
         return;
 
     const ix = Number.parseInt(last.id.substring(3));
-    last.classList.add('top');
-    last.style.animationName = screens[ix].animation;
+    let next_active = last;
+    if ('incomingTransform' in screens[ix]) {
+      next_active = last.previousElementSibling! as HTMLElement;
+    }
+
+    next_active.classList.add('top');
+    next_active.classList.add('active');
+    next_active.style.animationName = screens[ix].animation;
   }
   
   function popScreen() {
-    document.getElementById('progressScroller')!.scrollTop = 0;
     const stack = document.getElementById('stack')!;
-    const element = stack.lastElementChild as HTMLElement;
-    if (!element)
-        return;
 
-    const ix = Number.parseInt(element.id.substring(3));
-    element.classList.remove('top');
-    element.classList.add('end');
-    element.getAnimations()[0].commitStyles();
-    element.style.animationName = `${screens[ix].animation}end`;
+    const active = stack.querySelector('.active')! as HTMLElement;
+    active.classList.add('end');
 
-    element.getAnimations()[0].addEventListener('finish', (e) => {
-      stack.removeChild(element);
-      initStackTop();
-    });
+    let rotateOut = () => {
+        active.classList.remove('active');
+        active.classList.remove('end');
+        active.classList.remove('top');
+        active.style.animationName = '';
+        active.style.transform = '';
+
+        const old_front_element = stack.lastElementChild! as HTMLElement;
+        stack.insertBefore(old_front_element, stack.firstElementChild);
+        document.getElementById('progressScroller')!.scrollTop = 0;
+        initStackTop();
+    }
+
+    if (active.getAnimations().length > 0) {
+      active.getAnimations()[0].commitStyles();
+      const last_ix = Number.parseInt(stack.lastElementChild!.id.substring(3));
+      active.style.animationName = `${screens[last_ix].animation}end`;
+      active.getAnimations()[0].addEventListener('finish', rotateOut);
+    } else {
+      rotateOut();
+    }
+
+
+
   }
