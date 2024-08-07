@@ -29,6 +29,18 @@ import { BackProgressAnimator } from "./BackProgressAnimator";
         timeline: '--progress-timeline',
         animation: 'builtinback',
     },  
+    {src: 'resources/mdn3.png',
+        timeline: '--progress-timeline',
+        animation: 'fade',
+    },  
+    {src: 'resources/mdn2.png',
+        timeline: '--progress-timeline',
+        animation: 'fade',
+    },  
+    {src: 'resources/mdn1.png',
+        timeline: '--progress-timeline',
+        animation: 'builtinback',
+    },  
     {src: 'resources/wiki4.png',
         timeline: '--progress-timeline',
         animation: 'spin',
@@ -191,6 +203,8 @@ window.onload = () => {
         active.classList.remove('top');
         active.style.animationName = '';
         active.style.transform = '';
+        active.style.opacity = '';
+
 
         const old_front_element = stack.lastElementChild! as HTMLElement;
         stack.insertBefore(old_front_element, stack.firstElementChild);
