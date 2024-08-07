@@ -52,7 +52,7 @@ export class BackProgressAnimator {
             return;
         }
         this.mLastBackEvent = event;
-        console.log("OnBackProgressed: " + event.progress);
+        //console.log("OnBackProgressed: " + event.progress);
         if (this.mSpring == null) 
             return;
         this.mSpring.animateToFinalPosition(event.progress * BackProgressAnimator.SCALE_FACTOR);
@@ -87,7 +87,7 @@ export class BackProgressAnimator {
         this.mBackCancelledFinishRunnable = finishCallback;
         this.mSpring.doneCb = finishCallback;
         // this.mSpring.addEndListener(mBackCanceled)
-        console.log("===CANCEL BACK PROGRESS");
+        //console.log("===CANCEL BACK PROGRESS");
         this.mSpring.animateToFinalPosition(0);
     }
 
@@ -99,7 +99,7 @@ export class BackProgressAnimator {
         if (this.mLastBackEvent == null || this.mCallback == null || !this.mBackAnimationInProgress) {
             return;
         }
-        console.log(`=== UPDATE PROGRESS VALUE ${progress / BackProgressAnimator.SCALE_FACTOR}`);
+        //console.log(`=== UPDATE PROGRESS VALUE ${progress / BackProgressAnimator.SCALE_FACTOR}`);
         const x = this.mLastBackEvent.x;
         const y = this.mLastBackEvent.y;
         const vx = this.mLastBackEvent.vx;

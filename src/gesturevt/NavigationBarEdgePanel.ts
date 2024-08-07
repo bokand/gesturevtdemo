@@ -169,7 +169,7 @@
     }
   
     handleMoveEvent(event: PointerEvent) {
-      const x = event.clientX;
+      const x = event.clientX > this.mStartX ? event.clientX : this.mStartX;
       const y = event.clientY;
       let touchTranslation = Math.abs(x - this.mStartX);
       const yOffset = y - this.mStartY;
