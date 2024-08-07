@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc; vite build --outDir=docs --base=/gesturevt",
+    "build": "tsc; vite build --outDir=docs/gesturevt --base=/gesturevt",
     "preview": "vite preview"
   },
   "devDependencies": {
