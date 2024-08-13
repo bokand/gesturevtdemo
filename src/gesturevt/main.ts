@@ -4,6 +4,15 @@ import { NavigationBarEdgePanel } from "./NavigationBarEdgePanel";
 import { BackProgressAnimator } from "./BackProgressAnimator";
 
   const screens = [
+    {src: 'resources/photos2.png',
+        timeline: '--progress-timeline',
+        animation: 'photosshrink',
+        bganimation: 'photosshrinkbg',
+    },  
+    {src: 'resources/photos1.png',
+        timeline: '--progress-timeline',
+        animation: 'builtinback',
+    },  
     {src: 'resources/cnn3.png',
         timeline: '--progress-timeline',
         animation: '',
@@ -164,12 +173,41 @@ window.onload = () => {
     screens.forEach((screen, index) => {
       if (index > ix)
         return;
-      const img = document.createElement('img');
-      img.src = screen.src;
-      img.id = `img${index}`;
-      img.className = 'screen';
+
       const stack = document.getElementById('stack')!;
-      stack.insertBefore(img, stack.firstElementChild);
+      if ('bganimation' in screen) {
+        const container = document.createElement('div'); 
+        container.id = `img${index}`;
+        container.className = 'screen';
+        container.style.width="100%";
+        container.style.height = "100%";
+        container.style.animationDuration = '100ms';
+
+        const bg = document.createElement('div'); 
+        bg.style.width="100%";
+        bg.style.height = "100%";
+        bg.style.backgroundColor = 'black';
+        bg.style.animationName = screen.bganimation!;
+        bg.style.animationTimeline = screen.timeline;
+        bg.style.animationFillMode = 'both';
+        container.appendChild(bg);
+
+        const img = document.createElement('img');
+        img.src = screen.src;
+        img.id = `img${index}`;
+        img.className = 'screen';
+
+        container.appendChild(img);
+
+        stack.insertBefore(container, stack.firstElementChild);
+
+      } else {
+        const img = document.createElement('img');
+        img.src = screen.src;
+        img.id = `img${index}`;
+        img.className = 'screen';
+        stack.insertBefore(img, stack.firstElementChild);
+      }
     });
     initStackTop(); 
   }

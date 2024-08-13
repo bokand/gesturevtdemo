@@ -159,6 +159,23 @@
     }
   }
 
+  @keyframes photosshrink {
+    to {
+      transform: translateX(-20%) translateY(25%) scale(0.65);
+    }
+  }
+  @keyframes photosshrinkbg {
+    to {
+      opacity: 0;
+    }
+  }
+
+  @keyframes photosshrinkend {
+    to {
+      transform: translateX(-20%) translateY(25%) scale(0.65);
+    }
+  }
+
   @keyframes spin {
     to {
       transform: rotateY(-45deg) rotateX(5deg) scale(0.9);
@@ -218,10 +235,11 @@
     </p>
     <p>
       Pages are represented by static images that endlessly cycle. Navigations
-      that cross an origin use a Chrome's built-in default back transition. Each
-      "origin" in this demo provides a custom back-animation:
+      that cross an origin simulate Chrome's built-in transition. Each "origin"
+      in this demo provides a custom back-animation:
     </p>
     <ul>
+      <li>Photos: Hero use case.</li>
       <li>CNN: A faulty override, does nothing.</li>
       <li>GMail: shrink into inbox - slide in settings pannel.</li>
       <li>MDN: Subtle swipe and fade out</li>
